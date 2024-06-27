@@ -6,7 +6,7 @@ class Agenda
         @nome_agendas = {}
         recupera_agendas
         if identificador != nil
-            carregar_agendas(identificador)
+            carregar_agenda(identificador)
         end
     end
 
@@ -24,7 +24,7 @@ class Agenda
 
     def salvar_contatos(identificador)
         if(@nome_agendas.key?(identificador))
-            puts "Identificador já existente! Deseja deseja substituir? S/N"
+            puts "Encontramos uma agenda existente! Deseja substituir? S/N"
             escolha = gets.chomp
             if(escolha == "N" || escolha == "n")
                 puts "Qual identificador para a agenda?"
@@ -51,36 +51,45 @@ class Agenda
 
     
 
-    def carregar_agendas(identificador)
-        if(@nome_agendas.key?(identificador))
-            carregar_contatos(@nome_agendas[identificador])
-        else
-            puts "Agenda nao encontrada"
-        end
+
+    def arquivos
+        limpar_arquivos
     end
 
     private
-    def salvar_agenda( nome_agenda, agenda)
+    def salvar_agenda(nome_agenda, agenda)
+        exist = false
         agendas = "./arquivos/.agendas.txt"
-        if File.exist?(agendas)
-            if File.zero?(agendas)
-                File.open(agendas, "w") do |f|
-                   f.puts "Nome: #{nome_agenda} - agenda: #{agenda}"
-                end
+    
+        # Certifica-se de que o arquivo existe
+        unless File.exist?(agendas)
+            File.new(agendas, "w").close
+        end
+    
+        # Ler o conteúdo do arquivo
+        linhas = File.readlines(agendas)
+    
+        # Verificar e substituir linha, se existir
+        linhas.map! do |linha|
+            if linha.include?("#{nome_agenda} - agenda:")
+                exist = true
+                "Nome: #{nome_agenda} - agenda: #{agenda}\n"
             else
-                File.open(agendas, "w") do |f|
-                   f.puts "Nome: #{nome_agenda} - agenda: #{agenda}"
-                end
-
-            end
-        else
-            File.open(agendas, "w") do |f|
-                f.puts "Nome: #{nome_agenda} - agenda: #{agenda}"
+                linha
             end
         end
-
+    
+        # Adicionar uma nova linha se a agenda não existir
+        unless exist
+            linhas << "Nome: #{nome_agenda} - agenda: #{agenda}\n"
+        end
+    
+        # Escrever o conteúdo de volta para o arquivo
+        File.open(agendas, "w") do |f|
+            f.puts(linhas)
+        end
     end
-    def carregar_contatos(nome_agenda)
+    def carregar_contatos(nome_agenda)  #CARREGA OS CONTATOS DE UMA AGENDA ESCOLHIDA PARA O ARRAY @CONTATOS
         File.open("./arquivos/" + nome_agenda, "r") do |f|
             f.each_line do |contato|
                 contato = contato.split(" - ", 3)
@@ -90,8 +99,19 @@ class Agenda
         end
 
     end
-    def recupera_agendas
-        if File.exist?("./arquivos/.agendas.txt")
+
+    def limpar_arquivos #LIMPA ARQUIVOS ANTIGOS DE AGENDAS DESATUALIZADAS
+        arquivos = Dir.glob("./arquivos/*")
+        atuais = []
+        @nome_agendas.each do |key, value|
+            atuais << value
+        end
+
+        puts atuais
+    end
+    def recupera_agendas #RECUPERA PARA O HASH NOME_AGENDAS AS AGENDAS ATUALIZADAS
+
+        if File.exist?("./arquivos/.agendas.txt") && File.zero?("./arquivos/.agendas.txt")
             File.open("./arquivos/.agendas.txt", "r") do |f|
                 f.each_line do |agenda|
                     agenda = agenda.split(" - ", 2)
@@ -100,7 +120,15 @@ class Agenda
             end
         end
     end
-        
+    
+    def carregar_agenda(identificador) #IDENTICA SE EXISTE A AGENDA E CHAMDA CARREGAR CONTATOS
+        if(@nome_agendas.key?(identificador))
+            carregar_contatos(@nome_agendas[identificador])
+        else
+            puts "Agenda nao encontrada"
+        end
+    end
+
     
 end
 
