@@ -26,17 +26,23 @@ class Agenda
         if(@nome_agendas.key?(identificador))
             puts "Identificador já existente! Deseja deseja substituir? S/N"
             escolha = gets.chomp
-
-            return
-        nome_agenda = (0...5).map { ('a'..'z').to_a[rand(26)] }.join + ".txt"
-        @nome_agendas[identificador] = nome_agenda
-        File.open("./arquivos/" + nome_agenda, "w") do |f|
-            @contatos.each do |contato|
-                f.puts contato
+            if(escolha == "N" || escolha == "n")
+                puts "Qual identificador para a agenda?"
+                identificador = gets.chomp
+                salvar_contatos(identificador)
             end
         end
+                   
+            nome_agenda = (0...5).map { ('a'..'z').to_a[rand(26)] }.join + ".txt"
+            @nome_agendas[identificador] = nome_agenda
+            File.open("./arquivos/" + nome_agenda, "w") do |f|
+                @contatos.each do |contato|
+                    f.puts contato
+                end
+            end
 
-        salvar_agenda(identificador, nome_agenda)
+            salvar_agenda(identificador, nome_agenda)
+        
     end
 
     def zerar_contatos
@@ -62,7 +68,7 @@ class Agenda
                    f.puts "Nome: #{nome_agenda} - agenda: #{agenda}"
                 end
             else
-                File.open(agendas, "a") do |f|
+                File.open(agendas, "w") do |f|
                    f.puts "Nome: #{nome_agenda} - agenda: #{agenda}"
                 end
 
