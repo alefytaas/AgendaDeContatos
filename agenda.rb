@@ -1,13 +1,9 @@
 require_relative 'contato'
 require_relative 'agendas'
 class Agenda
-    def initialize(identificador = nil)
+    def initialize()
         @contatos = []
         @nome_agendas = {}
-        recupera_agendas
-        if identificador != nil
-            carregar_agenda(identificador)
-        end
     end
 
     def adicionar_contato(contato)
@@ -18,7 +14,7 @@ class Agenda
     def listar_contatos
         puts "Contatos"
         @contatos.each do |contato|
-            contato.to_s
+            contato
         end 
     end
 
@@ -46,10 +42,19 @@ class Agenda
     end
 
     def zerar_agendas
-        @nome_agendas= {}
+        @contatos = []
+        carregar_agenda("cuscuz")
     end
 
-    
+    def carregar_agenda(identificador)
+        recupera_agendas #IDENTICA SE EXISTE A AGENDA E CHAMDA CARREGAR CONTATOS
+        if(@nome_agendas.key?(identificador))
+            puts @nome_agendas[identificador]
+            carregar_contatos(@nome_agendas[identificador])
+        else
+            puts "Agenda nao encontrada"
+        end
+    end
 
 
     
@@ -90,11 +95,11 @@ class Agenda
         end
     end
     def carregar_contatos(nome_agenda)  #CARREGA OS CONTATOS DE UMA AGENDA ESCOLHIDA PARA O ARRAY @CONTATOS
-        File.open("./arquivos/" + nome_agenda, "r") do |f|
-            f.each_line do |contato|
-                contato = contato.split(" - ", 3)
-                cont = Contato.new(contato[0].sub("Nome: ", ""), contato[1].sub("Numero: ", ""), contato[2].sub("Email: ", ""))
-                @contatos << cont
+        File.open("./arquivos/" + nome_agenda.delete_suffix("\n"), "r") do |f|
+            f.each_line do |contat|
+                contat = contat.split(" - ", 3)
+                cont = Contato.new(contat[0].sub("Nome: ", ""), contat[1].sub("Numero: ", ""), contat[2].sub("Email: ", ""))
+                adicionar_contato(cont)
             end
         end
 
@@ -122,23 +127,19 @@ class Agenda
     end
     def recupera_agendas #RECUPERA PARA O HASH NOME_AGENDAS AS AGENDAS ATUALIZADAS
 
-        if File.exist?("./arquivos/.agendas.txt") && File.zero?("./arquivos/.agendas.txt")
+        if File.exist?("./arquivos/.agendas.txt") && !File.zero?("./arquivos/.agendas.txt")
             File.open("./arquivos/.agendas.txt", "r") do |f|
                 f.each_line do |agenda|
                     agenda = agenda.split(" - ", 2)
+                    
                     @nome_agendas[agenda[0].sub("Nome: ", "")] = agenda[1].sub("agenda: ", "")
+                    #puts @nome_agendas
                 end
             end
         end
     end
     
-    def carregar_agenda(identificador) #IDENTICA SE EXISTE A AGENDA E CHAMDA CARREGAR CONTATOS
-        if(@nome_agendas.key?(identificador))
-            carregar_contatos(@nome_agendas[identificador])
-        else
-            puts "Agenda nao encontrada"
-        end
-    end
+    
 
     
 end

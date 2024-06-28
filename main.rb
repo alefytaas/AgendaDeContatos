@@ -11,11 +11,17 @@ agenda.adicionar_contato(alefy)
 agenda.adicionar_contato(taisa)
 agenda.salvar_contatos("Alefy Almeida")
 
+
 agenda2.adicionar_contato(alefy)
 agenda2.adicionar_contato(taisa)
 agenda2.salvar_contatos("cuscuz")
 
-agenda2.adicionar_contato(alefy)
-agenda2.adicionar_contato(taisa)
-agenda2.salvar_contatos("Carne")
-#agenda.arquivos
+agenda3.adicionar_contato(alefy)
+agenda3.adicionar_contato(taisa)
+agenda3.salvar_contatos("Carne")
+
+#recuperar agenda existente
+teste = Agenda.new
+teste.carregar_agenda("Carne")
+puts teste.listar_contatos
+
