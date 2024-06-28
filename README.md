@@ -21,11 +21,11 @@ Este é um projeto simples de uma agenda de contatos em Ruby, que permite ao usu
 1. Certifique-se de ter o [Ruby](https://www.ruby-lang.org/en/downloads/) instalado no seu sistema.
 2. Clone este repositório para o seu diretório local:
     ```sh
-    git clone https://github.com/seu-usuario/agenda-de-contatos.git
+    git clone https://github.com/alefytaas/AgendaDeContatos.git
     ```
 3. Navegue até o diretório do projeto:
     ```sh
-    cd agenda-de-contatos
+    cd AgendaDeContatos
     ```
 4. Execute o script principal:
     ```sh
