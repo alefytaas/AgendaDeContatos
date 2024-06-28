@@ -1,5 +1,4 @@
 require_relative 'contato'
-require_relative 'agendas'
 class Agenda
     def initialize()
         @contatos = []
