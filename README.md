@@ -1,6 +1,6 @@
 # Agenda de Contatos
 
-Este é um projeto simples de uma agenda de contatos em Ruby, que permite ao usuário adicionar, visualizar, salvar e excluir contatos. O projeto utiliza conceitos básicos de Ruby, incluindo variáveis, tipos de dados, estruturas de controle, laços, orientação a objetos, tratamento de exceções, leitura e escrita de arquivos, e módulos.
+Este é um projeto simples de uma agenda de contatos em Ruby, que permite ao usuário adicionar, visualizar e salvar. O projeto utiliza conceitos básicos de Ruby, incluindo variáveis, tipos de dados, estruturas de controle, laços, orientação a objetos, leitura e escrita de arquivos.
 
 ## Funcionalidades
 
