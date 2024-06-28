@@ -45,16 +45,14 @@ class Agenda
         
     end
 
-    def zerar_contatos
-        @contatos = []
+    def zerar_agendas
+        @nome_agendas= {}
     end
 
     
 
 
-    def arquivos
-        limpar_arquivos
-    end
+    
 
     private
     def salvar_agenda(nome_agenda, agenda)
@@ -72,6 +70,8 @@ class Agenda
         # Verificar e substituir linha, se existir
         linhas.map! do |linha|
             if linha.include?("#{nome_agenda} - agenda:")
+                caminho = ("./arquivos/" + linha.delete_prefix("Nome: #{nome_agenda} - agenda: "))
+                File.delete(caminho.delete_suffix("\n"))
                 exist = true
                 "Nome: #{nome_agenda} - agenda: #{agenda}\n"
             else
@@ -103,11 +103,22 @@ class Agenda
     def limpar_arquivos #LIMPA ARQUIVOS ANTIGOS DE AGENDAS DESATUALIZADAS
         arquivos = Dir.glob("./arquivos/*")
         atuais = []
+        zerar_agendas
+        recupera_agendas
+
         @nome_agendas.each do |key, value|
-            atuais << value
+            atuais << "./arquivos/" + value 
+        end
+        puts "atuais"
+        puts atuais
+        puts "arquivos"
+        puts arquivos
+        arquivos.each do |arquivo|
+            if !atuais.include?(arquivo)
+                File.delete(arquivo)
+            end
         end
 
-        puts atuais
     end
     def recupera_agendas #RECUPERA PARA O HASH NOME_AGENDAS AS AGENDAS ATUALIZADAS
 
