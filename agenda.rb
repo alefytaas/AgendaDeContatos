@@ -6,7 +6,11 @@ class Agenda
     end
 
     def adicionar_contato(contato)
+        if is_email_valid?(contato.email) && is_nome_pessoa?(contato.nome) && is_contato?(contato.numero)
         @contatos << contato
+        else
+            puts "Existe algum dado incorreto"
+        end
     
     end
 
@@ -138,6 +142,30 @@ class Agenda
         end
     end
     
+    
+    REGEX_PATTERN = /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/
+def is_email_valid? email
+    if email =~REGEX_PATTERN
+        true
+    else
+        false
+    end
+end
+def is_nome_pessoa? nome
+    if nome =~ /\A[a-zA-ZÀ-ú]+(?: [a-zA-ZÀ-ú]+)*\z/
+        true
+    else
+        false
+    end
+end
+
+def is_contato? telefone
+    if telefone =~ /\A(?:\+?55)? ?(?:\(\d{2}\) ?)?(?:\d{4,5}-?\d{4})\z/
+        true
+    else
+        false
+    end
+end
     
 
     

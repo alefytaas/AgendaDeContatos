@@ -1,5 +1,5 @@
 class Contato
-    
+  attr_reader :email, :nome, :numero
   def initialize(nome, numero, email)
     @nome = nome
     @numero = numero
